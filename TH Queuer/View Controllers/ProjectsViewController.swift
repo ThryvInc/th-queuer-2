@@ -11,13 +11,13 @@ import UIKit
 class ProjectsViewController: UIViewController {
     //MARK: - Properties and Outlets
     @IBOutlet weak var tableView: UITableView!
+
+    var selectedProject = [String : AnyObject?]()
     var projects: [[String : AnyObject?]]? {
         didSet {
             self.tableView.reloadData()
         }
     }
-    var selectedProject = [String : AnyObject?]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Projects"
@@ -35,83 +35,89 @@ class ProjectsViewController: UIViewController {
     //MARK: - ViewController Functions and Methods
     func loadData() {
         let completion = { (data: Data?) in
-            if let data = data {
-                guard let serializedData = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String : AnyObject?]] else {
-                    ErrorMessage.manager.presentErrorMessage(.noData, self)
-                    return
-                }
+            guard let getData = data else {
+                ErrorMessage.manager.presentErrorMessage(.noData, self)
+                return
+            }
 
+            do {
+                let serializedData = try JSONSerialization.jsonObject(with: getData, options: .allowFragments) as! [[String : AnyObject?]]
                 self.projects = serializedData
             }
+            catch {
+                ErrorMessage.manager.presentErrorMessage(.cannotParseJSON(rawError: error), self)
+            }
+
         }
 
         let errorHandling = { (error: Error?) in
-            if let error = error as? AppError {
-                ErrorMessage.manager.presentErrorMessage(error, self)
+            if let error = error {
+                ErrorMessage.manager.presentErrorMessage(AppError.other(rawError: error), self)
             }
         }
 
-        ProjectHelper.manager.makeRequest(completionHandler: completion, errorHandler: errorHandling)
+        ProjectHelper.manager.makeRequest(completionHandler: completion,
+                                          errorHandler: errorHandling)
     }
     
     func addRightBarButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForProjectCreation))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForProject))
     }
 
-    @objc func promptForProjectCreation() {
+    @objc func promptForProject() {
         let vc = UIAlertController(title: "Project name", message: nil, preferredStyle: .alert)
-        
-        vc.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-            vc.dismiss(animated: true, completion: nil)
-            
-            var request = URLRequest(url: URL(string: AppDelegate.projectsURL)!)
-            request.httpBody = try? JSONSerialization.data(withJSONObject: ["project" : ["name": vc.textFields![0].text as? AnyObject, "color": -13508189 as AnyObject]], options: .prettyPrinted)
-            request.addValue("application/json", forHTTPHeaderField: "Content-type")
-            request.addValue(UserDefaults.standard.string(forKey: "apiKey")!, forHTTPHeaderField: "X-Qer-Authorization")
-            request.httpMethod="POST"
-            request.addValue("application/json", forHTTPHeaderField: "Accept")
-            
-            URLSession(configuration: URLSessionConfiguration.default).dataTask(with: request, completionHandler: { (data, response, optError) in
-                DispatchQueue.main.async{
-                    if let error = optError
-                    {
-                        UIAlertView(title: "Ruh roh", message: error.localizedDescription + "\nMaybe check your internet?", delegate: nil, cancelButtonTitle: ":(").show()
-                    }
-                    var request = URLRequest(url: URL(string: AppDelegate.projectsURL)!)
-                    request.addValue("application/json", forHTTPHeaderField: "Content-type")
-                    request.addValue(UserDefaults.standard.string(forKey: "apiKey")!, forHTTPHeaderField: "X-Qer-Authorization")
-                    request.addValue("application/json", forHTTPHeaderField: "Accept")
-                    
-                    URLSession(configuration: URLSessionConfiguration.default).dataTask(with: request, completionHandler: { (data, response, optError) in
-                        DispatchQueue.main.async {
-                            if let error = optError {
-                                UIAlertView(title: "Ruh roh", message: error.localizedDescription + "\nMaybe check your internet?", delegate: nil, cancelButtonTitle: ":(").show()
-                            }
-                            
-                            if let jsonData = data {
-                                self.projects = try! JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [[String : AnyObject?]]
-                                self.tableView.reloadData()
-                                //                        }catch let jsonError as NSError {
-                                //
-                                //                        }
-                            }
-                        }
-                    }).resume()
-                }
-            }).resume()
-        }))
-        
-        vc.addAction(UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            vc.dismiss(animated: true, completion: nil)
-        })
-        
+
         vc.addTextField { (textfield) in
             textfield.placeholder = "Name"
         }
         
+        vc.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            vc.dismiss(animated: true, completion: nil)
+
+            if let textFields = vc.textFields, let projectName = textFields[0].text {
+                let completion = { (data: Data?) in
+                    guard data != nil else { return }
+
+                    let completionCeption = { (data: Data?) in
+                        guard let getData = data else { return }
+
+                        let serializedData = try? JSONSerialization.jsonObject(with: getData, options: .allowFragments) as? [[String : AnyObject?]]
+
+                        guard serializedData != nil else { return }
+
+                        self.projects = serializedData!
+
+                    }
+
+                    let errorCeption = { (error: Error?) in
+                        if let error = error {
+                            ErrorMessage.manager.presentErrorMessage(.other(rawError: error), self)
+                        }
+                    }
+
+                    ProjectHelper.manager.makeRequest(completionHandler: completionCeption,
+                                                      errorHandler: errorCeption)
+
+                }
+
+                let errorHandling = { (error: Error?) in
+                    if let error = error {
+                        ErrorMessage.manager.presentErrorMessage(.other(rawError: error), self)
+                    }
+                }
+
+                ProjectHelper.manager.createProject(projectName,
+                                                    completionHandler: completion,
+                                                    errorHandler: errorHandling)
+            }
+        }))
+
+        vc.addAction(UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            vc.dismiss(animated: true, completion: nil)
+        })
+
         present(vc, animated: true, completion: nil)
     }
-    
 }
 
 //MARK: - TableView Delegates and Methods

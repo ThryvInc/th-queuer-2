@@ -47,8 +47,7 @@ class LoginHelper {
             }
         }
 
-        APIRequest.manager.performDataTask(.post,
-                                           withURL: nil,
+        APIRequest.manager.performDataTask(withURL: nil,
                                            withRequest: request,
                                            completionHandler: completionHandling,
                                            errorHandler: errorHandling)
