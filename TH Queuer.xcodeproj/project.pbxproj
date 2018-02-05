@@ -8,13 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		49F4569920263C2200E3836A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F4569820263C2200E3836A /* AppDelegate.swift */; };
-		49F4569B20263C2200E3836A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F4569A20263C2200E3836A /* ViewController.swift */; };
 		49F4569E20263C2200E3836A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49F4569C20263C2200E3836A /* Main.storyboard */; };
 		49F456A020263C2200E3836A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49F4569F20263C2200E3836A /* Assets.xcassets */; };
 		49F456A320263C2200E3836A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49F456A120263C2200E3836A /* LaunchScreen.storyboard */; };
 		49F456AE20263C2200E3836A /* TH_QueuerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F456AD20263C2200E3836A /* TH_QueuerTests.swift */; };
 		49F456B920263D3500E3836A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F456B820263D3500E3836A /* LoginViewController.swift */; };
 		49F456BB20263D5000E3836A /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F456BA20263D5000E3836A /* ProjectsViewController.swift */; };
+		9E404A1D2027A6A500AF7E86 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E404A1C2027A6A500AF7E86 /* APIRequest.swift */; };
+		9E404A252027BCA600AF7E86 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E404A242027BCA600AF7E86 /* AppError.swift */; };
+		9E404A272027BCEF00AF7E86 /* RequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E404A262027BCEF00AF7E86 /* RequestType.swift */; };
+		9E404A292027D32F00AF7E86 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E404A282027D32F00AF7E86 /* LoginHelper.swift */; };
+		9E404A2B2027F31300AF7E86 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E404A2A2027F31300AF7E86 /* ErrorMessage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +34,6 @@
 /* Begin PBXFileReference section */
 		49F4569520263C2200E3836A /* TH Queuer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TH Queuer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F4569820263C2200E3836A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		49F4569A20263C2200E3836A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		49F4569D20263C2200E3836A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		49F4569F20263C2200E3836A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49F456A220263C2200E3836A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -40,6 +43,11 @@
 		49F456AF20263C2200E3836A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49F456B820263D3500E3836A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		49F456BA20263D5000E3836A /* ProjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
+		9E404A1C2027A6A500AF7E86 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		9E404A242027BCA600AF7E86 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		9E404A262027BCEF00AF7E86 /* RequestType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestType.swift; sourceTree = "<group>"; };
+		9E404A282027D32F00AF7E86 /* LoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginHelper.swift; sourceTree = "<group>"; };
+		9E404A2A2027F31300AF7E86 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,14 +89,11 @@
 		49F4569720263C2200E3836A /* TH Queuer */ = {
 			isa = PBXGroup;
 			children = (
-				49F4569820263C2200E3836A /* AppDelegate.swift */,
-				49F4569A20263C2200E3836A /* ViewController.swift */,
-				49F4569C20263C2200E3836A /* Main.storyboard */,
-				49F4569F20263C2200E3836A /* Assets.xcassets */,
-				49F456A120263C2200E3836A /* LaunchScreen.storyboard */,
-				49F456A420263C2200E3836A /* Info.plist */,
-				49F456B820263D3500E3836A /* LoginViewController.swift */,
-				49F456BA20263D5000E3836A /* ProjectsViewController.swift */,
+				9E404A2C2027F4A900AF7E86 /* Models */,
+				9E404A1E2027A91100AF7E86 /* Managers */,
+				9E404A212027A95500AF7E86 /* Storyboards */,
+				9E404A202027A93B00AF7E86 /* Supporting Files */,
+				9E404A1F2027A92900AF7E86 /* View Controllers */,
 			);
 			path = "TH Queuer";
 			sourceTree = "<group>";
@@ -100,6 +105,53 @@
 				49F456AF20263C2200E3836A /* Info.plist */,
 			);
 			path = "TH QueuerTests";
+			sourceTree = "<group>";
+		};
+		9E404A1E2027A91100AF7E86 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				9E404A1C2027A6A500AF7E86 /* APIRequest.swift */,
+				9E404A2A2027F31300AF7E86 /* ErrorMessage.swift */,
+				9E404A282027D32F00AF7E86 /* LoginHelper.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		9E404A1F2027A92900AF7E86 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				49F456B820263D3500E3836A /* LoginViewController.swift */,
+				49F456BA20263D5000E3836A /* ProjectsViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		9E404A202027A93B00AF7E86 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49F4569820263C2200E3836A /* AppDelegate.swift */,
+				49F4569F20263C2200E3836A /* Assets.xcassets */,
+				49F456A420263C2200E3836A /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9E404A212027A95500AF7E86 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				49F456A120263C2200E3836A /* LaunchScreen.storyboard */,
+				49F4569C20263C2200E3836A /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		9E404A2C2027F4A900AF7E86 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9E404A242027BCA600AF7E86 /* AppError.swift */,
+				9E404A262027BCEF00AF7E86 /* RequestType.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,7 +259,11 @@
 			files = (
 				49F456BB20263D5000E3836A /* ProjectsViewController.swift in Sources */,
 				49F456B920263D3500E3836A /* LoginViewController.swift in Sources */,
-				49F4569B20263C2200E3836A /* ViewController.swift in Sources */,
+				9E404A2B2027F31300AF7E86 /* ErrorMessage.swift in Sources */,
+				9E404A272027BCEF00AF7E86 /* RequestType.swift in Sources */,
+				9E404A252027BCA600AF7E86 /* AppError.swift in Sources */,
+				9E404A292027D32F00AF7E86 /* LoginHelper.swift in Sources */,
+				9E404A1D2027A6A500AF7E86 /* APIRequest.swift in Sources */,
 				49F4569920263C2200E3836A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,7 +419,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2RAXN4MKTE;
-				INFOPLIST_FILE = "TH Queuer/Info.plist";
+				INFOPLIST_FILE = "TH Queuer/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.thryvinc.TH-Queuer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -378,7 +434,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2RAXN4MKTE;
-				INFOPLIST_FILE = "TH Queuer/Info.plist";
+				INFOPLIST_FILE = "TH Queuer/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.thryvinc.TH-Queuer";
 				PRODUCT_NAME = "$(TARGET_NAME)";

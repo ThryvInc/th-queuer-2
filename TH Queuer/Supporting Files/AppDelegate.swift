@@ -10,14 +10,18 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    static let BASE_URL = "https://queuer-production.herokuapp.com/api/v1/"
-    static let PROJECTS_URL = BASE_URL + "projects"
+    static let baseURL = "https://queuer-production.herokuapp.com/api/v1/"
+    static let projectsURL = baseURL + "projects"
+    static let sessionURL = baseURL + "session"
     
     var window: UIWindow?
-    
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        if UserDefaults.standard.string(forKey: "apiKey") == nil {
+            let rootController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "login")
+            self.window?.rootViewController = rootController
+        }
+
         return true
     }
     

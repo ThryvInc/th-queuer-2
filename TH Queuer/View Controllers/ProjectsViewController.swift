@@ -8,79 +8,88 @@
 
 import UIKit
 
-class ProjectsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ProjectsViewController: UIViewController {
+    //MARK: - ViewController Properties and Outlets
     @IBOutlet weak var tableView: UITableView!
-    var projects: Array<Dictionary<String, AnyObject?>>?
-    var selProj: Dictionary<String, AnyObject?>?
+    var projects: [[String : AnyObject?]]?
+    var selectedProject = [String : AnyObject?]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-title = "Projects"
-        var request = URLRequest(url: URL(string: "https://queuer-production.herokuapp.com/api/v1/projects")!)
-        request.addValue("application/json", forHTTPHeaderField: "Content-type")
+        self.title = "Projects"
+
+        // TableView Setup
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "project")
+
+        // View Setup
+        addRightBarButton()
+        loadData()
+    }
+    
+    //MARK: - ViewController Functions and Methods
+    func loadData() {
+        var request = URLRequest(url: URL(string: "https://queuer-production.herokuapp.com/api/v1/projects")!)
+        request.addValue("application/json", forHTTPHeaderField: "Content-type")
         request.addValue(UserDefaults.standard.string(forKey: "apiKey")!, forHTTPHeaderField: "X-Qer-Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        URLSession(configuration: URLSessionConfiguration.default).dataTask(with: request, completionHandler: { (data, response, optError) in
-            DispatchQueue.main.async{
-                if let error = optError {
+        URLSession(configuration: URLSessionConfiguration.default).dataTask(with: request, completionHandler: { (data, response, error) in
+            DispatchQueue.main.async {
+                if let error = error {
                     UIAlertView(title: "Ruh roh", message: error.localizedDescription + "\nMaybe check your internet?", delegate: nil, cancelButtonTitle: ":(").show()
                 }
                 if let jsonData = data {
                     self.projects = try! JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? Array<Dictionary<String, AnyObject?>>
                     self.tableView.reloadData()
-//                        }catch let jsonError as NSError {
-//
-//                        }
-                }else{
-                    
+                    //                        }catch let jsonError as NSError {
+                    //
+                    //                        }
                 }
             }
         }).resume()
-        navigationItem.rightBarButtonItem=UIBarButtonItem(barButtonSystemItem: .add, target: self, action: Selector("promptProjCreate"))
-        
-        // Do any additional setup after loading the view.
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    func addRightBarButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForProjectCreation))
     }
     
-    @objc func promptProjCreate() {
+    @objc func promptForProjectCreation() {
         let vc = UIAlertController(title: "Project name", message: nil, preferredStyle: .alert)
         
         vc.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
             vc.dismiss(animated: true, completion: nil)
-            var request = URLRequest(url: URL(string: AppDelegate.PROJECTS_URL)!)
+            
+            var request = URLRequest(url: URL(string: AppDelegate.projectsURL)!)
             request.httpBody = try? JSONSerialization.data(withJSONObject: ["project" : ["name": vc.textFields![0].text as? AnyObject, "color": -13508189 as AnyObject]], options: .prettyPrinted)
             request.addValue("application/json", forHTTPHeaderField: "Content-type")
             request.addValue(UserDefaults.standard.string(forKey: "apiKey")!, forHTTPHeaderField: "X-Qer-Authorization")
             request.httpMethod="POST"
             request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
             URLSession(configuration: URLSessionConfiguration.default).dataTask(with: request, completionHandler: { (data, response, optError) in
                 DispatchQueue.main.async{
                     if let error = optError
                     {
                         UIAlertView(title: "Ruh roh", message: error.localizedDescription + "\nMaybe check your internet?", delegate: nil, cancelButtonTitle: ":(").show()
                     }
-                    var request = URLRequest(url: URL(string: "https://queuer-production.herokuapp.com/api/v1/projects")!)
+                    var request = URLRequest(url: URL(string: AppDelegate.projectsURL)!)
                     request.addValue("application/json", forHTTPHeaderField: "Content-type")
                     request.addValue(UserDefaults.standard.string(forKey: "apiKey")!, forHTTPHeaderField: "X-Qer-Authorization")
                     request.addValue("application/json", forHTTPHeaderField: "Accept")
+                    
                     URLSession(configuration: URLSessionConfiguration.default).dataTask(with: request, completionHandler: { (data, response, optError) in
-                        DispatchQueue.main.async{
+                        DispatchQueue.main.async {
                             if let error = optError {
                                 UIAlertView(title: "Ruh roh", message: error.localizedDescription + "\nMaybe check your internet?", delegate: nil, cancelButtonTitle: ":(").show()
                             }
+                            
                             if let jsonData = data {
-                                self.projects = try! JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? Array<Dictionary<String, AnyObject?>>
+                                self.projects = try! JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [[String : AnyObject?]]
                                 self.tableView.reloadData()
                                 //                        }catch let jsonError as NSError {
                                 //
                                 //                        }
-                            }
-                            else{
                             }
                         }
                     }).resume()
@@ -88,9 +97,10 @@ title = "Projects"
             }).resume()
         }))
         
-        vc.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+        vc.addAction(UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             vc.dismiss(animated: true, completion: nil)
-        }))
+        })
+        
         vc.addTextField { (textfield) in
             textfield.placeholder = "Name"
         }
@@ -98,48 +108,39 @@ title = "Projects"
         present(vc, animated: true, completion: nil)
     }
     
-    
-    
-    
-    
-    
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+}
+
+//MARK: - TableView Delegates and Methods
+
+extension ProjectsViewController: UITableViewDelegate {}
+
+extension ProjectsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "project")
-        cell?.textLabel?.text = (projects![indexPath.row])["name"]! as? String
-        return cell!;
+        let cell = tableView.dequeueReusableCell(withIdentifier: "project", for: indexPath)
+        
+        if let projects = projects, let projectName = projects[indexPath.row]["name"] as? String {
+            cell.textLabel?.text = projectName
+        }
+        
+        return cell
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let count = projects?.count {
-            return count
+        if let projects = projects {
+            return projects.count
         }
-        else
-        {
-            return 0;
-        }
+        
+        return 0
     }
-    
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selProj = projects![indexPath.row];
-        tableView.deselectRow(at: indexPath, animated: true)
-//        performSegue(withIdentifier: "viewproject", sender: self)
+        if let projects = projects {
+            selectedProject = projects[indexPath.row]
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            // TODO: Code for moving onto the next View when it is up
+            // performSegue(withIdentifier: "viewproject", sender: self)
+        }
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-
 }
