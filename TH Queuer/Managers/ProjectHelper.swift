@@ -50,12 +50,13 @@ class ProjectHelper {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
 
         let completionHandling = { (data: Data?) in
-            guard let data = data else { return }
-            completion(data)
+            if let data = data {
+                completion(data)
+            }
         }
 
         let errorHandling = { (error: Error?) in
-            if let error = error  {
+            if let error = error {
                 errorHandle(error)
             }
         }

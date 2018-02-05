@@ -51,12 +51,6 @@ class APIRequest {
                         return
                     }
 
-                    if let response = response as? HTTPURLResponse {
-                        if response.statusCode != 200 {
-                            errorHandler(AppError.badResponseCode(code: response.statusCode))
-                        }
-                    }
-
                     if let data = data {
                         completionHandler(data)
                     }
