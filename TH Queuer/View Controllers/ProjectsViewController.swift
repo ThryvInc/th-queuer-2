@@ -9,9 +9,13 @@
 import UIKit
 
 class ProjectsViewController: UIViewController {
-    //MARK: - ViewController Properties and Outlets
+    //MARK: - Properties and Outlets
     @IBOutlet weak var tableView: UITableView!
-    var projects: [[String : AnyObject?]]?
+    var projects: [[String : AnyObject?]]? {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     var selectedProject = [String : AnyObject?]()
     
     override func viewDidLoad() {
@@ -30,30 +34,30 @@ class ProjectsViewController: UIViewController {
     
     //MARK: - ViewController Functions and Methods
     func loadData() {
-        var request = URLRequest(url: URL(string: "https://queuer-production.herokuapp.com/api/v1/projects")!)
-        request.addValue("application/json", forHTTPHeaderField: "Content-type")
-        request.addValue(UserDefaults.standard.string(forKey: "apiKey")!, forHTTPHeaderField: "X-Qer-Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        URLSession(configuration: URLSessionConfiguration.default).dataTask(with: request, completionHandler: { (data, response, error) in
-            DispatchQueue.main.async {
-                if let error = error {
-                    UIAlertView(title: "Ruh roh", message: error.localizedDescription + "\nMaybe check your internet?", delegate: nil, cancelButtonTitle: ":(").show()
+        let completion = { (data: Data?) in
+            if let data = data {
+                guard let serializedData = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String : AnyObject?]] else {
+                    ErrorMessage.manager.presentErrorMessage(.noData, self)
+                    return
                 }
-                if let jsonData = data {
-                    self.projects = try! JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? Array<Dictionary<String, AnyObject?>>
-                    self.tableView.reloadData()
-                    //                        }catch let jsonError as NSError {
-                    //
-                    //                        }
-                }
+
+                self.projects = serializedData
             }
-        }).resume()
+        }
+
+        let errorHandling = { (error: Error?) in
+            if let error = error as? AppError {
+                ErrorMessage.manager.presentErrorMessage(error, self)
+            }
+        }
+
+        ProjectHelper.manager.makeRequest(completionHandler: completion, errorHandler: errorHandling)
     }
     
     func addRightBarButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForProjectCreation))
     }
-    
+
     @objc func promptForProjectCreation() {
         let vc = UIAlertController(title: "Project name", message: nil, preferredStyle: .alert)
         

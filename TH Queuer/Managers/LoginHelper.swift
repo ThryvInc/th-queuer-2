@@ -12,7 +12,7 @@ class LoginHelper {
     private init () {}
     static let manager = LoginHelper()
 
-    func makeRequest(_ username: String, _ password: String, completionHandler completion: @escaping (Data?) -> Void, errorHandler errorCallback: @escaping (Error?) -> Void) {
+    func makeRequest(_ username: String, _ password: String, completionHandler completion: @escaping (Data?) -> Void, errorHandler errorHandle: @escaping (Error?) -> Void) {
         var request = URLRequest(url: URL(string: AppDelegate.sessionURL)!)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: ["username": username, "password": password], options: .prettyPrinted)
@@ -21,7 +21,7 @@ class LoginHelper {
 
         let completionHandling = { (data: Data?) in
             guard let data = data else {
-                errorCallback(AppError.noData)
+                errorHandle(AppError.noData)
                 return
             }
 
@@ -30,12 +30,12 @@ class LoginHelper {
                 if let apiKey = dict?["api_key"] {
                     UserDefaults.standard.set(apiKey, forKey: "apiKey")
                 } else {
-                    errorCallback(AppError.wrongLoginCombo)
+                    errorHandle(AppError.wrongLoginCombo)
                 }
             }
 
             catch {
-                errorCallback(AppError.cannotParseJSON(rawError: error))
+                errorHandle(AppError.cannotParseJSON(rawError: error))
             }
 
             completion(data)
@@ -43,7 +43,7 @@ class LoginHelper {
 
         let errorHandling = { (error: Error?) in
             if let error = error {
-                errorCallback(error)
+                errorHandle(error)
             }
         }
 

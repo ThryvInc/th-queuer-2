@@ -12,9 +12,10 @@ enum AppError: Error {
     case badURL(url: String)
     case badData
     case noData
+    case noInternet
     case badResponseCode(code: Int)
     case cannotParseJSON(rawError: Error)
     case wrongLoginCombo
-    case noInternet
+    case incompleteFields
     case other(rawError: Error)
 }
