@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0XH-nc-0Cp">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -10,25 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TH_Queuer" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                    </view>
-                    <connections>
-                        <segue destination="0XH-nc-0Cp" kind="presentation" identifier="projects" id="ihw-KN-qTp"/>
-                        <segue destination="nQK-CP-3hp" kind="presentation" identifier="login" id="mIQ-ZR-sRX"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-238" y="114"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="v7l-Ze-h7K">
             <objects>
@@ -76,10 +57,10 @@
             </objects>
             <point key="canvasLocation" x="2037.5999999999999" y="110.19490254872565"/>
         </scene>
-        <!--Login View Controller-->
+        <!--login-->
         <scene sceneID="scX-pQ-LIq">
             <objects>
-                <viewController id="nQK-CP-3hp" customClass="LoginViewController" customModule="TH_Queuer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="login" title="login" id="nQK-CP-3hp" customClass="LoginViewController" customModule="TH_Queuer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h1k-E2-IUv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -88,13 +69,13 @@
                                 <rect key="frame" x="16" y="81" width="343" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" textContentType="username"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bLf-Ok-zLr">
                                 <rect key="frame" x="16" y="119" width="343" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RsW-Si-sgs">
                                 <rect key="frame" x="168" y="157" width="38" height="30"/>
@@ -107,8 +88,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="bLf-Ok-zLr" firstAttribute="top" secondItem="Mi4-eh-Duu" secondAttribute="bottom" constant="8" id="8Ax-Qu-Ekt"/>
-                            <constraint firstItem="RsW-Si-sgs" firstAttribute="centerX" secondItem="bLf-Ok-zLr" secondAttribute="centerX" id="Ngb-9g-l2x"/>
                             <constraint firstItem="Mi4-eh-Duu" firstAttribute="top" secondItem="HDW-a4-hsf" secondAttribute="top" constant="61" id="QI2-7g-tjP"/>
+                            <constraint firstItem="RsW-Si-sgs" firstAttribute="centerX" secondItem="h1k-E2-IUv" secondAttribute="centerX" id="SpG-Iz-t0J"/>
                             <constraint firstItem="HDW-a4-hsf" firstAttribute="trailing" secondItem="Mi4-eh-Duu" secondAttribute="trailing" constant="16" id="Svr-4k-Zwj"/>
                             <constraint firstItem="RsW-Si-sgs" firstAttribute="top" secondItem="bLf-Ok-zLr" secondAttribute="bottom" constant="8" id="YzB-cF-qBW"/>
                             <constraint firstItem="bLf-Ok-zLr" firstAttribute="trailing" secondItem="Mi4-eh-Duu" secondAttribute="trailing" id="kFI-CJ-xbA"/>
@@ -118,17 +99,14 @@
                         <viewLayoutGuide key="safeArea" id="HDW-a4-hsf"/>
                     </view>
                     <connections>
-                        <outlet property="password_field" destination="bLf-Ok-zLr" id="wpQ-Cu-2Qz"/>
-                        <outlet property="usernameFiedl" destination="Mi4-eh-Duu" id="kND-U7-yPn"/>
+                        <outlet property="passwordField" destination="bLf-Ok-zLr" id="ePH-Vd-n2I"/>
+                        <outlet property="usernameField" destination="Mi4-eh-Duu" id="fsN-mg-cpQ"/>
                         <segue destination="0XH-nc-0Cp" kind="presentation" identifier="projects" id="mm1-JJ-gfP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BCD-GZ-297" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="509.60000000000002" y="689.5052473763119"/>
+            <point key="canvasLocation" x="159" y="110"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="mm1-JJ-gfP"/>
-    </inferredMetricsTieBreakers>
 </document>
