@@ -15,6 +15,7 @@ class ErrorMessage {
     func presentErrorMessage(_ errorType: AppError, _ viewController: UIViewController) {
         var errorMessage: String
 
+        // All the errors we care about here!
         switch errorType {
         case .noData:
             errorMessage = "Maybe check your internet?"
@@ -32,6 +33,7 @@ class ErrorMessage {
 
         let alertController = UIAlertController(title: "Ruh roh", message: errorMessage, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: ":(", style: .default, handler: nil)
+
         alertController.addAction(alertAction)
         viewController.present(alertController, animated: true, completion: nil)
     }

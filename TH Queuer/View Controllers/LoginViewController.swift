@@ -24,9 +24,7 @@ class LoginViewController: UIViewController {
         let completion = { (data: Data?) in
             if let _ = data, let _ = UserDefaults.standard.string(forKey: "apiKey") {
                 self.performSegue(withIdentifier: "projects", sender: self)
-            } else {
-                ErrorMessage.manager.presentErrorMessage(.noData, self)
-            }
+            } 
         }
 
         let errorHandling = { (error: Error?) in
